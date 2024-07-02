@@ -10,14 +10,18 @@ namespace DepCheck
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
             var sol = await VS.Solutions.GetActiveProjectAsync();
+            if (sol == null)
+            {
+                await VS.MessageBox.ShowWarningAsync("No active project!");
+                return;
+            }
             string solutionDir = Path.GetDirectoryName(sol.FullPath);
             solutionDir = Path.GetDirectoryName(solutionDir);
-            await VS.MessageBox.ShowWarningAsync(solutionDir);
 
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = $"/k C:\\Users\\79607\\Downloads\\dependency-check\\bin\\dependency-check.bat -o {solutionDir} -s {solutionDir}";
+            startInfo.Arguments = $"/c C:\\Users\\79607\\Downloads\\dependency-check\\bin\\dependency-check.bat -o {solutionDir} -s {solutionDir}";
             proc.StartInfo = startInfo;
             proc.Start();
             proc.WaitForExit();
