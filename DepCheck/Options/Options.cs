@@ -23,5 +23,17 @@ namespace DepCheck
         [Description("Настройка отображения окна коммандной строки во время работы расширения")]
         [DefaultValue(TerminalState.showAndHideWhenDone)]
         public TerminalState ShowTrminal { get; set; } = TerminalState.showAndHideWhenDone;
+
+        [Category("Paths")]
+        [DisplayName("Path to DC")]
+        [Description("Указание пути до исполняемого файла dependency check")]
+        [DefaultValue("")]
+        public string DCPath { get; set; } = "";
+
+        [Category("Paths")]
+        [DisplayName("Path to DC Report")]
+        [Description("Указание директории, в которую будет помещён отчёт")]
+        [DefaultValue("")]
+        public string ReportPath { get; set; } = "";
     }
 }

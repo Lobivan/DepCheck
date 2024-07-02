@@ -22,8 +22,8 @@ namespace DepCheck
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
 
-            char cmdPrefix = 'c';
             var opts = await Options.GetLiveInstanceAsync();
+            char cmdPrefix = 'c';
             if (opts.ShowTrminal == TerminalState.showAndKeepWhenDone)
             {
                 cmdPrefix = 'k';
@@ -32,8 +32,22 @@ namespace DepCheck
             {
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
             }
+            if (File.Exists(opts.DCPath) == false)
+            {
+                await VS.MessageBox.ShowWarningAsync($"File {opts.DCPath} does not exist!", 
+                    "Change DC executable in Tools > Options > DepCheck > Paths > Path to DC");
+                return;
+            }
+            if (opts.ReportPath == "")
+                opts.ReportPath = solutionDir;
+            if (Directory.Exists(opts.ReportPath) == false)
+            {
+                await VS.MessageBox.ShowWarningAsync($"File {opts.ReportPath} does not exist!",
+                    "Change Report destination in Tools > Options > DepCheck > Paths > Path to DC Report");
+                return;
+            }
 
-            startInfo.Arguments = $"/{cmdPrefix} C:\\Users\\79607\\Downloads\\dependency-check\\bin\\dependency-check.bat -o {solutionDir} -s {solutionDir}";
+            startInfo.Arguments = $"/{cmdPrefix} {opts.DCPath} -o {opts.ReportPath} -s {solutionDir}";
             proc.StartInfo = startInfo;
             proc.Start();
             proc.WaitForExit();
