@@ -21,7 +21,19 @@ namespace DepCheck
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = $"/c C:\\Users\\79607\\Downloads\\dependency-check\\bin\\dependency-check.bat -o {solutionDir} -s {solutionDir}";
+
+            char cmdPrefix = 'c';
+            var opts = await Options.GetLiveInstanceAsync();
+            if (opts.ShowTrminal == TerminalState.showAndKeepWhenDone)
+            {
+                cmdPrefix = 'k';
+            }
+            else if (opts.ShowTrminal == TerminalState.doNotShow)
+            {
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            }
+
+            startInfo.Arguments = $"/{cmdPrefix} C:\\Users\\79607\\Downloads\\dependency-check\\bin\\dependency-check.bat -o {solutionDir} -s {solutionDir}";
             proc.StartInfo = startInfo;
             proc.Start();
             proc.WaitForExit();

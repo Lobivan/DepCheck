@@ -11,6 +11,7 @@ namespace DepCheck
     [InstalledProductRegistration(Vsix.Name, Vsix.Description, Vsix.Version)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuids.DepCheckString)]
+    [ProvideOptionPage(typeof(OptionsProvider.OptionsOptions), "DepCheck", "Options", 0, 0, true, SupportsProfiles = true)]
     public sealed class DepCheckPackage : ToolkitPackage
     {
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
