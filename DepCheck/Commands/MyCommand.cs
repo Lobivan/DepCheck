@@ -65,7 +65,7 @@ namespace DepCheck
 
             if (Directory.Exists(opts.ReportPath) == false)
             {
-                await VS.MessageBox.ShowWarningAsync($"File {opts.ReportPath} does not exist!",
+                await VS.MessageBox.ShowWarningAsync($"Directory {opts.ReportPath} does not exist!",
                     "Change Report destination in Tools > Options > DepCheck > Paths > Path to DC Report");
                 return "";
             }
