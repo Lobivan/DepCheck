@@ -7,7 +7,7 @@
 ## Запуск расширения
 
 1. Склонировать репозиторий и открыть решение **DepCheck.sln** в Visual Studio
-![Open Solution](imgs\SlnOpen.png)
+![Open Solution](imgs/SlnOpen.png)
 2. Запустить решение (f5 или Ctrl+f5). Откроется новое окно Visual Studio, в котором нужно открыть проект для анализа (можно также открыть DepCheck.sln)
 3. Перейти в *Tools > Options > DepCheck* и указать в опции **Path to DC** путь до испольняемого файла *dependency-check.bat*
 ![Path to DC](imgs\DCPath.png)
