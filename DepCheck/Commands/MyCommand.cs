@@ -32,7 +32,7 @@ namespace DepCheck
             proc.StartInfo.Arguments = cmdString;
 
             var opts = await Options.GetLiveInstanceAsync();
-            if (opts.ShowTrminal == TerminalState.doNotShow)
+            if (opts.ShowTerminal == TerminalState.doNotShow)
                 proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             await VS.StatusBar.ShowProgressAsync("Started CVE check", 2, 3);
@@ -41,16 +41,16 @@ namespace DepCheck
             await VS.StatusBar.ShowProgressAsync("CVE check Done", 3, 3);
 
             if (opts.AutoOpenReport)
-                System.Diagnostics.Process.Start(solutionDir + "\\dependency-check-report.html");
+                System.Diagnostics.Process.Start(opts.ReportPath + "\\dependency-check-report.html");
             else
-                await VS.MessageBox.ShowAsync($"Check is comlete, report can be found at {solutionDir}\\dependency-check-report.html");
+                await VS.MessageBox.ShowAsync($"Check is comlete, report can be found at {opts.ReportPath}\\dependency-check-report.html");
         }
         private async Task<string> ConstructCommandStringAsync(string solutionDir)
         {
             var opts = await Options.GetLiveInstanceAsync();
 
             char cmdPrefix = 'c';
-            if (opts.ShowTrminal == TerminalState.showAndKeepWhenDone)
+            if (opts.ShowTerminal == TerminalState.showAndKeepWhenDone)
                 cmdPrefix = 'k';
 
             if (File.Exists(opts.DCPath) == false)
@@ -61,10 +61,7 @@ namespace DepCheck
             }
 
             if (opts.ReportPath == "")
-            {
                 opts.ReportPath = solutionDir;
-                await opts.SaveAsync();
-            }
 
             if (Directory.Exists(opts.ReportPath) == false)
             {

@@ -22,7 +22,7 @@ namespace DepCheck
         [DisplayName("Show Cmd")]
         [Description("Настройка отображения окна коммандной строки во время работы расширения")]
         [DefaultValue(TerminalState.showAndHideWhenDone)]
-        public TerminalState ShowTrminal { get; set; } = TerminalState.showAndHideWhenDone;
+        public TerminalState ShowTerminal { get; set; } = TerminalState.showAndHideWhenDone;
 
         [Category("Customization")]
         [DisplayName("Open Report Automaticly")]
