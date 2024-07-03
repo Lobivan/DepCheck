@@ -1,4 +1,6 @@
 ﻿using EnvDTE;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TaskStatusCenter;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,6 +12,8 @@ namespace DepCheck
     {
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
+            await VS.StatusBar.ShowProgressAsync("Checking options", 1, 3);
+
             var sol = await VS.Solutions.GetActiveProjectAsync();
             if (sol == null)
             {
@@ -24,14 +28,22 @@ namespace DepCheck
                 return;
 
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = cmdString;
-            proc.StartInfo = startInfo;
+            proc.StartInfo.FileName = "cmd.exe";
+            proc.StartInfo.Arguments = cmdString;
+
+            var opts = await Options.GetLiveInstanceAsync();
+            if (opts.ShowTrminal == TerminalState.doNotShow)
+                proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+            await VS.StatusBar.ShowProgressAsync("Started CVE check", 2, 3);
             proc.Start();
             proc.WaitForExit();
+            await VS.StatusBar.ShowProgressAsync("CVE check Done", 3, 3);
 
-            System.Diagnostics.Process.Start(solutionDir + "\\dependency-check-report.html");
+            if (opts.AutoOpenReport)
+                System.Diagnostics.Process.Start(solutionDir + "\\dependency-check-report.html");
+            else
+                await VS.MessageBox.ShowAsync($"Check is comlete, report can be found at {solutionDir}\\dependency-check-report.html");
         }
         private async Task<string> ConstructCommandStringAsync(string solutionDir)
         {

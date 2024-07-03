@@ -24,6 +24,12 @@ namespace DepCheck
         [DefaultValue(TerminalState.showAndHideWhenDone)]
         public TerminalState ShowTrminal { get; set; } = TerminalState.showAndHideWhenDone;
 
+        [Category("Customization")]
+        [DisplayName("Open Report Automaticly")]
+        [Description("Настройка автоматического открытия отчёта по завершении сканирования")]
+        [DefaultValue(true)]
+        public bool AutoOpenReport { get; set; } = true;
+
         [Category("Paths")]
         [DisplayName("Path to DC")]
         [Description("Указание пути до исполняемого файла dependency check")]
@@ -32,7 +38,7 @@ namespace DepCheck
 
         [Category("Paths")]
         [DisplayName("Path to DC Report")]
-        [Description("Указание директории, в которую будет помещён отчёт")]
+        [Description("Указание директории, в которую будет помещён отчёт.\nОставьте пустым для размещения в директории проекта")]
         [DefaultValue("")]
         public string ReportPath { get; set; } = "";
     }
