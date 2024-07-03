@@ -34,11 +34,20 @@ namespace DepCheck
             var opts = await Options.GetLiveInstanceAsync();
             if (opts.ShowTerminal == TerminalState.doNotShow)
                 proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            string reportFile = $"{opts.ReportPath}\\dependency-check-report.html";
+            if (File.Exists(reportFile))
+                File.Delete(reportFile);
 
             await VS.StatusBar.ShowProgressAsync("Started CVE check", 2, 3);
             proc.Start();
             proc.WaitForExit();
             await VS.StatusBar.ShowProgressAsync("CVE check Done", 3, 3);
+
+            if (File.Exists(reportFile) == false)
+            {
+                await VS.MessageBox.ShowWarningAsync("Error: Report file was not created!", "Try again and check cmd output");
+                return;
+            }
 
             if (opts.AutoOpenReport)
                 System.Diagnostics.Process.Start(opts.ReportPath + "\\dependency-check-report.html");

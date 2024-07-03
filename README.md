@@ -39,3 +39,6 @@
   ![No File Error](imgs/NoFileError.png)
   - Указанная для отчёта директория не существует
   ![No Directory Error](imgs/NoDirError.png)
+
+- Ошибка в случае, если не удалось создать отчёт
+![Report Not Created Error](imgs/ReportNotCreatedError.png)
